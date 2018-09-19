@@ -9,7 +9,7 @@ import re
 import curses
 
 tuning_regex = re.compile("\w#?")
-rows_regex = re.compile("\d+:(.+)")
+rows_regex = re.compile("\d+:(\w.+)")
 
 
 class Tab(object):
