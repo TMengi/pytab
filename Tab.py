@@ -30,7 +30,7 @@ class Tab(object):
         """
         self.stdscr = stdscr
         curses.curs_set(1)
-        curses.echo()
+        # curses.echo()
         curses.cbreak()
         stdscr.keypad(True)
         self.y_max = curses.LINES
@@ -45,19 +45,19 @@ class Tab(object):
             if c == ord('q'):
                 break
 
-            elif c == curses.KEY_UP:
+            elif c == curses.KEY_UP or c == ord('w'):
                 y, x = curses.getsyx()
                 self.stdscr.move(y - 1, x)
 
-            elif c == curses.KEY_DOWN:
+            elif c == curses.KEY_DOWN or c == ord('s'):
                 y, x = curses.getsyx()
                 self.stdscr.move(y + 1, x)
 
-            elif c == curses.KEY_LEFT:
+            elif c == curses.KEY_LEFT or c == ord('a'):
                 y, x = curses.getsyx()
                 self.stdscr.move(y, x - 1)
 
-            elif c == curses.KEY_RIGHT:
+            elif c == curses.KEY_RIGHT or c == ord('d'):
                 y, x = curses.getsyx()
                 self.stdscr.move(y, x + 1)
 
