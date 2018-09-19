@@ -29,13 +29,45 @@ class Tab(object):
         curses display
         """
         self.stdscr = stdscr
+        curses.curs_set(1)
+        curses.echo()
+        curses.cbreak()
+        stdscr.keypad(True)
         self.y_max = curses.LINES
         self.x_max = curses.COLS
 
         self.add_bar()
 
-        self.stdscr.refresh()
-        self.stdscr.getkey()
+        while True:
+            c = self.stdscr.getch()
+
+            # quit option
+            if c == ord('q'):
+                break
+
+            elif c == curses.KEY_UP:
+                y, x = curses.getsyx()
+                self.stdscr.move(y - 1, x)
+
+            elif c == curses.KEY_DOWN:
+                y, x = curses.getsyx()
+                self.stdscr.move(y + 1, x)
+
+            elif c == curses.KEY_LEFT:
+                y, x = curses.getsyx()
+                self.stdscr.move(y, x - 1)
+
+            elif c == curses.KEY_RIGHT:
+                y, x = curses.getsyx()
+                self.stdscr.move(y, x + 1)
+
+            elif c == ord('h') or c == ord('p'):
+                # echo the key
+                pass
+
+            # any non number or h/p
+            elif c < ord('0') or c > ord('9'):
+                pass
 
     def add_bar(self):
         """
@@ -45,7 +77,7 @@ class Tab(object):
         :param y: y location for new bar
         :return: (x, y) coord of end of bar
         """
-        bar = "-----------------|"
+        bar = "----------------|"
 
         num_bars = min(4, self.x_max // len(bar))
 
