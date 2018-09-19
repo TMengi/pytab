@@ -30,11 +30,17 @@ class Tab(object):
         """
         self.stdscr = stdscr
         curses.curs_set(1)
-        # curses.echo()
         curses.cbreak()
         stdscr.keypad(True)
         self.y_max = curses.LINES
         self.x_max = curses.COLS
+
+        self.stdscr.addstr(0, 0, "Tuning: {} {} {} {} {} {}".format(*self.tuning))
+        self.y_loc = 2
+
+        if self.capo is not None:
+            self.stdscr.addstr(1, 0, "Capo {}".format(self.capo))
+            self.y_loc += 1
 
         self.add_bar()
 
