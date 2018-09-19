@@ -7,6 +7,7 @@ __date__ = "18 September 2018"
 
 import re
 import curses
+import time
 
 tuning_regex = re.compile("\w#?")
 rows_regex = re.compile("\d+:(\w.+)")
@@ -41,8 +42,6 @@ class Tab(object):
         curses display
         """
         self.stdscr = stdscr
-        curses.curs_set(1)
-        curses.cbreak()
         stdscr.keypad(True)
         self.y_max = curses.LINES
         self.x_max = curses.COLS
@@ -75,8 +74,20 @@ class Tab(object):
                 break
 
             # save key
-            if c == curses.KEY_ENTER:
-                self.write('_'.join(self.title.lower().split()) + '.txt')
+            elif c == ord('o'):
+                # save file
+                name = '_'.join(self.title.lower().split()) + '.txt'
+                self.write(name)
+
+                # display a message and return cursor to same place
+                coord = curses.getsyx()
+                curses.curs_set(0)
+                self.stdscr.addstr(self.y_max - 1, 0, f"file saved: {name}", curses.A_BOLD)
+                self.stdscr.refresh()
+                time.sleep(1)
+                self.stdscr.addstr(self.y_max - 1, 0, ' ' * (self.x_max - 1))
+                self.stdscr.move(*coord)
+                curses.curs_set(1)
 
             # cursor movement with arrow keys or wasd
             elif c == curses.KEY_UP or c == ord('w'):
@@ -156,5 +167,5 @@ class Tab(object):
 
 
 if __name__ == '__main__':
-    tab = Tab(title="Navy Blue", artist="The Story So Far", tuning='C#G#D#G#CD#')
+    tab = Tab(title="Navy Blue", artist="The Story So Far", tuning='FACGCE')
     tab.edit()
