@@ -15,16 +15,16 @@ rows_regex = re.compile("\d+:(\w.+)")
 
 class Tab(object):
 
-    def __init__(self, title=None, artist=None, tuning='EADGBE', capo=None, n=12, m=4):
+    def __init__(self, title: str=None, artist: str=None, tuning: str='EADGBE', capo: int=None, n: int=12, m: int=4):
         """
         Object to input and store guitar tablature data.
 
-        :param title: optional string for song title
-        :param artist: optional string for artist name
-        :param tuning: optional string representing open notes
-        :param capo: optional integer for capo
-        :param n: optional integer for notes to put in a measure
-        :param m: optional integer for maximum measures to put in one row
+        :param title: song title
+        :param artist: artist name
+        :param tuning: open notes
+        :param capo: capo fret number
+        :param n: number of notes to put in a measure
+        :param m: maximum measures to put in one row
         """
         # user-passed
         self.title = title
@@ -155,11 +155,11 @@ class Tab(object):
         """
         curses.wrapper(self.screen)
 
-    def write(self, file_name):
+    def write(self, file_name: str):
         """
         writes the tab to an output file
 
-        :param file_name: string for output file name
+        :param file_name: output file name
         """
         # dump screen to file
         with open(file_name, 'w+b') as f:
