@@ -15,7 +15,7 @@ rows_regex = re.compile("\d+:(\w.+)")
 
 class Tab(object):
 
-    def __init__(self, title=None, artist=None, tuning='EADGBE', capo=None):
+    def __init__(self, title=None, artist=None, tuning='EADGBE', capo=None, m=4):
         """
         Object to input and store guitar tablature data.
 
@@ -23,13 +23,14 @@ class Tab(object):
         :param artist: optional string for artist name
         :param tuning: optional string representing open notes
         :param capo: optional integer for capo
+        :param m: maximum number of measures to put in one row
         """
         # user-passed
         self.title = title
         self.artist = artist
         self.tuning = tuning_regex.findall(tuning)
         self.capo = capo
-        self.tab = ''
+        self.m = m
 
         # defined later when screen is created
         self.stdscr = None
@@ -133,7 +134,7 @@ class Tab(object):
         coord = curses.getsyx()
 
         # calculate how many bars to print and figure out spacing for tuning column
-        num_bars = min(4, self.x_max // len(bar))
+        num_bars = min(self.m, self.x_max // len(bar))
         tune_width = max((len(s) for s in self.tuning))
 
         # print strings in reversed order
