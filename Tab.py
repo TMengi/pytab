@@ -44,8 +44,8 @@ class Tab(object):
         """
         self.stdscr = stdscr
         stdscr.keypad(True)
-        self.y_max = curses.LINES
-        self.x_max = curses.COLS
+        self.y_max = curses.LINES - 1
+        self.x_max = curses.COLS - 1
         self.y_loc = 0
 
         if self.title is not None:
@@ -83,10 +83,10 @@ class Tab(object):
                 # display a message and return cursor to same place
                 coord = curses.getsyx()
                 curses.curs_set(0)
-                self.stdscr.addstr(self.y_max - 1, 0, f"file saved: {name}", curses.A_BOLD)
+                self.stdscr.addstr(self.y_max, 0, f"file saved: {name}", curses.A_BOLD)
                 self.stdscr.refresh()
                 time.sleep(1)
-                self.stdscr.addstr(self.y_max - 1, 0, ' ' * (self.x_max - 1))
+                self.stdscr.addstr(self.y_max, 0, ' ' * self.x_max)
                 self.stdscr.move(*coord)
                 curses.curs_set(1)
 
@@ -96,13 +96,13 @@ class Tab(object):
                 self.stdscr.move(max(0, y - 1), x)
             elif c == curses.KEY_DOWN or c == ord('s'):
                 y, x = curses.getsyx()
-                self.stdscr.move(min(self.y_max - 1, y + 1), x)
+                self.stdscr.move(min(self.y_max, y + 1), x)
             elif c == curses.KEY_LEFT or c == ord('a'):
                 y, x = curses.getsyx()
                 self.stdscr.move(y, max(0, x - 1))
             elif c == curses.KEY_RIGHT or c == ord('d'):
                 y, x = curses.getsyx()
-                self.stdscr.move(y, min(self.x_max - 1, x + 1))
+                self.stdscr.move(y, min(self.x_max, x + 1))
 
             # valid letter and symbol keys for tab
             elif ord('0') <= c <= ord('9') \
