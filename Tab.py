@@ -113,7 +113,7 @@ class Tab(object):
         num_bars = min(4, self.x_max // len(bar))
         tune_width = max((len(s) for s in self.tuning))
 
-        for i, string in enumerate(self.tuning):
+        for i, string in enumerate(reversed(self.tuning)):
             self.stdscr.addstr(self.y_loc, 0, f"{string:{tune_width}}|" + bar * num_bars)
             self.y_loc += 1
 
