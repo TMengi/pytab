@@ -21,3 +21,18 @@ class Tab(object):
         """
         self.tuning = tuning_regex.findall(tuning)
         self.capo = capo
+        self.tab = ''
+
+    def edit(self):
+        """
+        opens a curses display to edit the tab
+        """
+        pass
+
+    def write(self, file_name):
+        """
+        writes the tab to an output file
+
+        :param file_name: string for output file name
+        """
+        pass
