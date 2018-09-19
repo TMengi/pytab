@@ -72,8 +72,11 @@ class Tab(object):
 
             # quit key
             if c == ord('q'):
-                self.write('out.txt')
                 break
+
+            # save key
+            if c == curses.KEY_ENTER:
+                self.write('_'.join(self.title.lower().split()) + '.txt')
 
             # cursor movement with arrow keys or wasd
             elif c == curses.KEY_UP or c == ord('w'):
