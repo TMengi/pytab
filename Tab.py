@@ -97,9 +97,10 @@ class Tab(object):
         num_bars = min(4, self.x_max // len(bar))
 
         for i, string in enumerate(self.tuning):
-            self.stdscr.addstr(self.y_loc + i, 0, "{:2}|".format(string) + bar * num_bars)
+            self.stdscr.addstr(self.y_loc, 0, "{:2}|".format(string) + bar * num_bars)
+            self.y_loc += 1
 
-        self.y_loc += i + 2
+        self.y_loc += 1
 
     def edit(self):
         """
