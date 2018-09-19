@@ -105,6 +105,7 @@ class Tab(object):
 
             # valid letter and symbol keys for tab
             elif ord('0') <= c <= ord('9') \
+                    or c == ord('x') \
                     or c == ord('h') \
                     or c == ord('p') \
                     or c == ord('/')\
@@ -126,7 +127,7 @@ class Tab(object):
         """
         prints another bar to the curses display for editing
         """
-        bar = "----------------|"
+        bar = "------------------------|"
 
         # calculate how many bars to print and figure out spacing for tuning column
         num_bars = min(4, self.x_max // len(bar))
