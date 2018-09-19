@@ -5,8 +5,8 @@ The main object for the module
 __author__ = "Tyler McCown"
 __date__ = "18 September 2018"
 
-import re
 import curses
+import re
 import time
 
 tuning_regex = re.compile("\w#?")
