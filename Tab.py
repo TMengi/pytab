@@ -14,13 +14,17 @@ rows_regex = re.compile("\d+:(.+)")
 
 class Tab(object):
 
-    def __init__(self, tuning='EADGBE', capo=None):
+    def __init__(self, title=None, artist=None, tuning='EADGBE', capo=None):
         """
         Object to input and store guitar tablature data.
 
-        :param tuning: string representing open notes
+        :param title: optional string for song title
+        :param artist: optional string for artist name
+        :param tuning: optional string representing open notes
         :param capo: optional integer for capo
         """
+        self.title = title
+        self.artist = artist
         self.tuning = tuning_regex.findall(tuning)
         self.capo = capo
         self.tab = ''
@@ -35,13 +39,24 @@ class Tab(object):
         stdscr.keypad(True)
         self.y_max = curses.LINES
         self.x_max = curses.COLS
+        self.y_loc = 0
 
-        self.stdscr.addstr(0, 0, "Tuning: {} {} {} {} {} {}".format(*self.tuning))
-        self.y_loc = 2
+        if self.title is not None:
+            self.stdscr.addstr(self.y_loc, 0, self.title)
+
+            if self.artist is not None:
+                self.stdscr.addstr(self.y_loc, len(self.title), f" - {self.artist}")
+
+            self.y_loc += 1
+
+        self.stdscr.addstr(self.y_loc, 0, "Tuning: {} {} {} {} {} {}".format(*self.tuning))
+        self.y_loc += 1
 
         if self.capo is not None:
-            self.stdscr.addstr(1, 0, "Capo {}".format(self.capo))
+            self.stdscr.addstr(self.y_loc, 0, "Capo {}".format(self.capo))
             self.y_loc += 1
+
+        self.y_loc += 1
 
         self.add_bar()
 
@@ -133,5 +148,5 @@ class Tab(object):
 
 
 if __name__ == '__main__':
-    tab = Tab('C#G#D#G#CD#')
+    tab = Tab(title="Navy Blue", artist="The Story So Far", tuning='C#G#D#G#CD#')
     tab.edit()
