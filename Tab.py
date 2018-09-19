@@ -79,7 +79,7 @@ class Tab(object):
             # save key
             elif c == ord('o'):
                 # save file
-                name = '_'.join(self.title.lower().split()) + '.txt'
+                name = '_'.join(self.title.lower().split()) + '.tab'
                 self.write(name)
 
                 # display a message and return cursor to same place
