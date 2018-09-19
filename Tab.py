@@ -9,6 +9,7 @@ import re
 import curses
 
 tuning_regex = re.compile("\w#?")
+rows_regex = re.compile("\d+:(.+)")
 
 
 class Tab(object):
@@ -117,6 +118,18 @@ class Tab(object):
         """
         with open(file_name, 'w+b') as f:
             self.stdscr.putwin(f)
+
+        self.format_file(file_name)
+
+    def format_file(self, file_name):
+        with open(file_name, 'rb') as f:
+            file_string = f.read()[4:].decode('utf-8')
+            file_string = re.sub("\s{2:}", '', file_string).replace('\s', ' ')
+            rows = rows_regex.findall(file_string)
+
+        with open(file_name, 'w') as f_new:
+            for line in rows:
+                f_new.write(line + '\n')
 
 
 if __name__ == '__main__':
