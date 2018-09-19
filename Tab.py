@@ -72,6 +72,10 @@ class Tab(object):
             elif ord('0') <= c <= ord('9'):
                 self.stdscr.addch(c)
 
+            # insert new bar
+            elif c == curses.KEY_IC:
+                self.add_bar()
+
             else:
                 pass
 
@@ -88,7 +92,9 @@ class Tab(object):
         num_bars = min(4, self.x_max // len(bar))
 
         for i, string in enumerate(self.tuning):
-            self.stdscr.addstr(i, 0, "{:2}|".format(string) + bar * num_bars)
+            self.stdscr.addstr(self.y_loc + i, 0, "{:2}|".format(string) + bar * num_bars)
+
+        self.y_loc += i + 2
 
     def edit(self):
         """
