@@ -129,6 +129,9 @@ class Tab(object):
         """
         bar = "------------------------|"
 
+        # save original cursor location
+        coord = curses.getsyx()
+
         # calculate how many bars to print and figure out spacing for tuning column
         num_bars = min(4, self.x_max // len(bar))
         tune_width = max((len(s) for s in self.tuning))
@@ -139,6 +142,9 @@ class Tab(object):
             self.y_loc += 1
 
         self.y_loc += 1
+
+        # replace cursor in original spot
+        self.stdscr.move(*coord)
 
     def edit(self):
         """
