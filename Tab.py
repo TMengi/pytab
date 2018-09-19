@@ -29,16 +29,28 @@ class Tab(object):
         curses display
         """
         self.stdscr = stdscr
-        self.endx = 0
-        self.endy = 0
-        y_max = curses.LINES
-        x_max = curses.COLS
+        self.y_max = curses.LINES
+        self.x_max = curses.COLS
 
-        for i, string in enumerate(self.tuning):
-            self.stdscr.addstr(i, 0, "{}|-----------------|".format(string))
+        self.add_bar()
 
         self.stdscr.refresh()
         self.stdscr.getkey()
+
+    def add_bar(self):
+        """
+        prints another bar on the curses display for editing
+
+        :param x: x location for new bar
+        :param y: y location for new bar
+        :return: (x, y) coord of end of bar
+        """
+        bar = "-----------------|"
+
+        num_bars = min(4, self.x_max // len(bar))
+
+        for i, string in enumerate(self.tuning):
+            self.stdscr.addstr(i, 0, "{:2}|".format(string) + bar * num_bars)
 
     def edit(self):
         """
@@ -56,5 +68,5 @@ class Tab(object):
 
 
 if __name__ == '__main__':
-    tab = Tab()
+    tab = Tab('C#G#D#G#CD#')
     tab.edit()
