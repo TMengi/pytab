@@ -41,32 +41,31 @@ class Tab(object):
         while True:
             c = self.stdscr.getch()
 
-            # quit option
+            # quit key
             if c == ord('q'):
                 break
 
+            # cursor movement with arrow keys or wasd
             elif c == curses.KEY_UP or c == ord('w'):
                 y, x = curses.getsyx()
-                self.stdscr.move(y - 1, x)
-
+                self.stdscr.move(max(0, y - 1), x)
             elif c == curses.KEY_DOWN or c == ord('s'):
                 y, x = curses.getsyx()
-                self.stdscr.move(y + 1, x)
-
+                self.stdscr.move(min(self.y_max - 1, y + 1), x)
             elif c == curses.KEY_LEFT or c == ord('a'):
                 y, x = curses.getsyx()
-                self.stdscr.move(y, x - 1)
-
+                self.stdscr.move(y, max(0, x - 1))
             elif c == curses.KEY_RIGHT or c == ord('d'):
                 y, x = curses.getsyx()
-                self.stdscr.move(y, x + 1)
+                self.stdscr.move(y, min(self.x_max - 1, x + 1))
 
-            elif c == ord('h') or c == ord('p'):
-                # echo the key
-                pass
+            # keys for the tab
+            elif c == ord('h') or c == ord('p') or c == ord('/'):
+                self.stdscr.addch(c)
+            elif ord('0') <= c <= ord('9'):
+                self.stdscr.addch(c)
 
-            # any non number or h/p
-            elif c < ord('0') or c > ord('9'):
+            else:
                 pass
 
     def add_bar(self):
