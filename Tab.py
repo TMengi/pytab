@@ -15,7 +15,7 @@ rows_regex = re.compile("\d+:(\w.+)")
 
 class Tab(object):
 
-    def __init__(self, title=None, artist=None, tuning='EADGBE', capo=None, m=4):
+    def __init__(self, title=None, artist=None, tuning='EADGBE', capo=None, n=12, m=4):
         """
         Object to input and store guitar tablature data.
 
@@ -23,13 +23,15 @@ class Tab(object):
         :param artist: optional string for artist name
         :param tuning: optional string representing open notes
         :param capo: optional integer for capo
-        :param m: maximum number of measures to put in one row
+        :param n: optional integer for notes to put in a measure
+        :param m: optional integer for maximum measures to put in one row
         """
         # user-passed
         self.title = title
         self.artist = artist
         self.tuning = tuning_regex.findall(tuning)
         self.capo = capo
+        self.n = n
         self.m = m
 
         # defined later when screen is created
@@ -128,7 +130,7 @@ class Tab(object):
         """
         prints another bar to the curses display for editing
         """
-        bar = "------------------------|"
+        bar = '-' * self.n * 2 + '|'
 
         # save original cursor location
         coord = curses.getsyx()
@@ -175,5 +177,5 @@ class Tab(object):
 
 
 if __name__ == '__main__':
-    tab = Tab(title="Navy Blue", artist="The Story So Far", tuning='FACGCE')
+    tab = Tab(title="Even the Darkness has Arms", artist="The Barr Brothers", tuning='DGDGBD', n=16, m=1)
     tab.edit()
