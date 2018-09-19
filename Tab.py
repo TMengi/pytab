@@ -6,6 +6,7 @@ __author__ = "Tyler McCown"
 __date__ = "18 September 2018"
 
 import re
+import curses
 
 tuning_regex = re.compile("\w#?")
 
@@ -23,11 +24,27 @@ class Tab(object):
         self.capo = capo
         self.tab = ''
 
+    def screen(self, stdscr):
+        """
+        curses display
+        """
+        self.stdscr = stdscr
+        self.endx = 0
+        self.endy = 0
+        y_max = curses.LINES
+        x_max = curses.COLS
+
+        for i, string in enumerate(self.tuning):
+            self.stdscr.addstr(i, 0, "{}|-----------------|".format(string))
+
+        self.stdscr.refresh()
+        self.stdscr.getkey()
+
     def edit(self):
         """
         opens a curses display to edit the tab
         """
-        pass
+        curses.wrapper(self.screen)
 
     def write(self, file_name):
         """
@@ -36,3 +53,8 @@ class Tab(object):
         :param file_name: string for output file name
         """
         pass
+
+
+if __name__ == '__main__':
+    tab = Tab()
+    tab.edit()
