@@ -23,11 +23,18 @@ class Tab(object):
         :param tuning: optional string representing open notes
         :param capo: optional integer for capo
         """
+        # user-passed
         self.title = title
         self.artist = artist
         self.tuning = tuning_regex.findall(tuning)
         self.capo = capo
         self.tab = ''
+
+        # defined later when screen is created
+        self.stdscr = None
+        self.y_max = None
+        self.x_max = None
+        self.y_loc = None
 
     def screen(self, stdscr):
         """
@@ -82,7 +89,7 @@ class Tab(object):
                 y, x = curses.getsyx()
                 self.stdscr.move(y, min(self.x_max - 1, x + 1))
 
-            # keys for the tab
+            # valid letter and symbol keys for tab
             elif ord('0') <= c <= ord('9') \
                     or c == ord('h') \
                     or c == ord('p') \
@@ -93,26 +100,25 @@ class Tab(object):
                 self.stdscr.addch(c)
                 self.stdscr.move(*coords)
 
-            # insert new bar
+            # key to insert new bar
             elif c == curses.KEY_IC:
                 self.add_bar()
 
+            # other keys do nothing
             else:
                 pass
 
     def add_bar(self):
         """
-        prints another bar on the curses display for editing
-
-        :param x: x location for new bar
-        :param y: y location for new bar
-        :return: (x, y) coord of end of bar
+        prints another bar to the curses display for editing
         """
         bar = "----------------|"
 
+        # calculate how many bars to print and figure out spacing for tuning column
         num_bars = min(4, self.x_max // len(bar))
         tune_width = max((len(s) for s in self.tuning))
 
+        # print strings in reversed order
         for i, string in enumerate(reversed(self.tuning)):
             self.stdscr.addstr(self.y_loc, 0, f"{string:{tune_width}}|" + bar * num_bars)
             self.y_loc += 1
@@ -131,20 +137,19 @@ class Tab(object):
 
         :param file_name: string for output file name
         """
+        # dump screen to file
         with open(file_name, 'w+b') as f:
             self.stdscr.putwin(f)
 
-        self.format_file(file_name)
-
-    def format_file(self, file_name):
+        # open dump file and read lines as binary
         with open(file_name, 'rb') as f:
             file_string = f.read()[4:].decode('utf-8')
             file_string = re.sub("\s{2:}", '', file_string).replace('\s', ' ')
             rows = rows_regex.findall(file_string)
 
+        # write lines to new
         with open(file_name, 'w') as f_new:
-            for line in rows:
-                f_new.write(line + '\n')
+            f_new.write('\n'.join(rows))
 
 
 if __name__ == '__main__':
