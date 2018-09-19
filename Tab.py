@@ -67,10 +67,15 @@ class Tab(object):
                 self.stdscr.move(y, min(self.x_max - 1, x + 1))
 
             # keys for the tab
-            elif c == ord('h') or c == ord('p') or c == ord('/'):
+            elif ord('0') <= c <= ord('9') \
+                    or c == ord('h') \
+                    or c == ord('p') \
+                    or c == ord('/')\
+                    or c == ord('-')\
+                    or c == ord('|'):
+                coords = curses.getsyx()
                 self.stdscr.addch(c)
-            elif ord('0') <= c <= ord('9'):
-                self.stdscr.addch(c)
+                self.stdscr.move(*coords)
 
             # insert new bar
             elif c == curses.KEY_IC:
