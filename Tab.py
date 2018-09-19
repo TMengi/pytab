@@ -43,6 +43,7 @@ class Tab(object):
 
             # quit key
             if c == ord('q'):
+                self.write('out.txt')
                 break
 
             # cursor movement with arrow keys or wasd
@@ -95,7 +96,8 @@ class Tab(object):
 
         :param file_name: string for output file name
         """
-        pass
+        with open(file_name, 'w+b') as f:
+            self.stdscr.putwin(f)
 
 
 if __name__ == '__main__':
