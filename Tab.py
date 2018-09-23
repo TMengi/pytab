@@ -34,11 +34,17 @@ class Tab(object):
         self.n = n
         self.m = m
 
-        # defined later when screen is created
+        # member variables for curses display
         self.stdscr = None
         self.y_max = None
         self.x_max = None
         self.y_loc = None
+
+        # name for output file
+        if self.title is not None:
+            self.file_name = '_'.join(self.title.lower().split()) + '.tab'
+        else:
+            self.file_name = f"{int(time.time())}.tab"
 
     def screen(self, stdscr):
         """
@@ -88,13 +94,12 @@ class Tab(object):
             # save key
             elif c == ord('o'):
                 # save file
-                name = '_'.join(self.title.lower().split()) + '.tab'
-                self.write(name)
+                self.write()
 
                 # display a message and return cursor to same place
                 coord = curses.getsyx()
                 curses.curs_set(0)
-                self.stdscr.addstr(self.y_max, 0, f"file saved: {name}", curses.A_BOLD)
+                self.stdscr.addstr(self.y_max, 0, f"file saved: {self.file_name}", curses.A_BOLD)
                 self.stdscr.refresh()
                 time.sleep(1)
                 self.stdscr.addstr(self.y_max, 0, ' ' * self.x_max)
@@ -135,7 +140,6 @@ class Tab(object):
             else:
                 pass
 
-
     def add_bar(self):
         """
         prints another bar to the curses display for editing
@@ -165,24 +169,22 @@ class Tab(object):
         """
         curses.wrapper(self.screen)
 
-    def write(self, file_name: str):
+    def write(self):
         """
         writes the tab to an output file
-
-        :param file_name: output file name
         """
         # dump screen to file
-        with open(file_name, 'w+b') as f:
+        with open(self.file_name, 'w+b') as f:
             self.stdscr.putwin(f)
 
         # open dump file and read lines as binary
-        with open(file_name, 'rb') as f:
+        with open(self.file_name, 'rb') as f:
             file_string = f.read()[4:].decode('utf-8')
             file_string = re.sub("\s{2:}", '', file_string).replace('\s', ' ')
             rows = rows_regex.findall(file_string)
 
         # write lines to new
-        with open(file_name, 'w') as f_new:
+        with open(self.file_name, 'w') as f_new:
             f_new.write('\n'.join(rows))
 
 
