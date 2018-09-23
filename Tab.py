@@ -50,25 +50,34 @@ class Tab(object):
         self.x_max = curses.COLS - 1
         self.y_loc = 0
 
+        # === print header === #
+        # title and artist
         if self.title is not None:
             self.stdscr.addstr(self.y_loc, 0, self.title)
-
             if self.artist is not None:
                 self.stdscr.addstr(self.y_loc, len(self.title), f" - {self.artist}")
-
             self.y_loc += 1
 
+        # tuning
         self.stdscr.addstr(self.y_loc, 0, "Tuning: {} {} {} {} {} {}".format(*self.tuning))
         self.y_loc += 1
 
+        # capo
         if self.capo is not None:
             self.stdscr.addstr(self.y_loc, 0, "Capo {}".format(self.capo))
             self.y_loc += 1
-
         self.y_loc += 1
 
+        # add an empty bar
         self.add_bar()
 
+        # run key processing loop
+        self.loop()
+
+    def loop(self):
+        """
+        loop to process keypresses in curses display
+        """
         while True:
             c = self.stdscr.getch()
 
@@ -125,6 +134,7 @@ class Tab(object):
             # other keys do nothing
             else:
                 pass
+
 
     def add_bar(self):
         """
