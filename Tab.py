@@ -90,7 +90,10 @@ class Tab(object):
 
             # quit key
             if c == ord('q'):
-                break
+                confirm = self.quit_check()
+
+                if confirm:
+                    break
 
             # save key
             elif c == ord('o'):
@@ -140,6 +143,33 @@ class Tab(object):
             # other keys do nothing
             else:
                 pass
+
+    def quit_check(self):
+        """
+        asks for confirmation to quit if the file has not been saved
+
+        :return: bool to confirm quit
+        """
+        if self.saved:
+            confirm = True
+
+        else:
+            self.stdscr.addstr(self.y_max, 0, 'file not saved. are you sure? (Y/N)', curses.A_BOLD)
+
+            while True:
+                c = self.stdscr.getch()
+
+                if c == ord('y'):
+                    confirm = True
+                    break
+
+                elif c == ord('n'):
+                    confirm = False
+                    break
+
+            self.stdscr.addstr(self.y_max, 0, ' ' * self.x_max)
+
+        return confirm
 
     def add_bar(self):
         """
