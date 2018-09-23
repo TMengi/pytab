@@ -45,7 +45,9 @@ G|--------------------------------|--------------------------------|
 D|--------------------------------|--------------------------------|
 ```
 
-###### future features:
+The `tuning` argument can also handle sharps, e.g. `tuning='C#G#D#G#CD#`.
+
+##### future features:
 - scrolling at bottom of screen for longer tabs
 - ask to confirm exit if the file has not been saved
 - allow for reopening a tab to edit again
