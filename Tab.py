@@ -40,13 +40,14 @@ class Tab(object):
         self.x_max = None
         self.y_loc = None
 
-        # name for output file
+        # member variables for output file
         if self.title is not None:
             self.file_name = '_'.join(self.title.lower().split()) + '.tab'
         else:
             self.file_name = f"{int(time.time())}.tab"
+        self.saved = False
 
-    def screen(self, stdscr):
+    def edit_new_tab(self, stdscr):
         """
         curses display
         """
@@ -167,7 +168,7 @@ class Tab(object):
         """
         opens a curses display to edit the tab
         """
-        curses.wrapper(self.screen)
+        curses.wrapper(self.edit_new_tab)
 
     def write(self):
         """
@@ -186,6 +187,8 @@ class Tab(object):
         # write lines to new
         with open(self.file_name, 'w') as f_new:
             f_new.write('\n'.join(rows))
+
+        self.saved = True
 
 
 if __name__ == '__main__':
