@@ -49,7 +49,7 @@ class Tab(object):
 
     def edit_new_tab(self, stdscr):
         """
-        curses display
+        curses display to edit a new tab
         """
         self.stdscr = stdscr
         stdscr.keypad(True)
@@ -77,6 +77,26 @@ class Tab(object):
 
         # add an empty bar
         self.add_bar()
+
+        # run key processing loop
+        self.loop()
+
+    def edit_existing_tab(self, stdscr):
+        """
+        curses display to edit an existing tab
+        """
+        self.stdscr = stdscr
+        stdscr.keypad(True)
+        self.y_max = curses.LINES - 1
+        self.x_max = curses.COLS - 1
+
+        # === open and print file === #
+        tab_file = open(self.file_name, 'r')
+
+        for i, line in enumerate(tab_file.readlines()):
+            self.stdscr.addstr(i, 0, line)
+
+        self.y_loc = i + 3
 
         # run key processing loop
         self.loop()
@@ -198,7 +218,11 @@ class Tab(object):
         """
         opens a curses display to edit the tab
         """
-        curses.wrapper(self.edit_new_tab)
+        if self.saved:
+            self.saved = False
+            curses.wrapper(self.edit_existing_tab)
+        else:
+            curses.wrapper(self.edit_new_tab)
 
     def write(self):
         """
@@ -223,4 +247,7 @@ class Tab(object):
 
 if __name__ == '__main__':
     tab = Tab(title="Even the Darkness has Arms", artist="The Barr Brothers", tuning='DGDGBD', n=16, m=1)
+    # tab = Tab(title='foo', artist='bar')
     tab.edit()
+    # input('press any key to continue')
+    # tab.edit()
