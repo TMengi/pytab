@@ -11,6 +11,7 @@ import time
 
 tuning_regex = re.compile("\w#?")
 rows_regex = re.compile("\d+:(\w.+)")
+# TODO: fix bug where whitespace lines are ignored
 
 
 class Tab(object):

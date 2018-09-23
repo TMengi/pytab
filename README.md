@@ -47,8 +47,9 @@ D|--------------------------------|--------------------------------|
 
 The `tuning` argument can also handle sharps, e.g. `tuning='C#G#D#G#CD#`.
 
+Once the file has been saved by pressing 'o' in the curses display, it can be reopened by calling `Tab.edit()` again.
+
 ##### future features:
 - scrolling at bottom of screen for longer tabs
 - ask to confirm exit if the file has not been saved
-- allow for reopening a tab to edit again
 - load a saved tab
